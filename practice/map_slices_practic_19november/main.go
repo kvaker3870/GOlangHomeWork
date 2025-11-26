@@ -1,6 +1,8 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+)
 
 func sliceSum(nums []int) int {
 	var sum int
@@ -35,13 +37,51 @@ func Delete(slice []int, index int) []int {
 	return slice
 }
 
+func insertByIndex(slice []int, index int, val int) []int {
+	return append(slice[:index], append([]int{val}, slice[index+1:]...)...)
+
+}
+func insertAfterIndex(slice []int, index int, val int) []int {
+	return append(slice[:index], append([]int{val}, slice[index:]...)...)
+}
+
+func makeChunks(slice []int, chunkSize int) [][]int {
+	var chunks [][]int
+
+	for i := 0; i < len(slice); i += chunkSize {
+		end := i + chunkSize
+		if end > len(slice) {
+			end = len(slice)
+		}
+		chunks = append(chunks, slice[i:end])
+	}
+
+	return chunks
+}
+
+type User struct {
+	Name string
+	City string
+}
+
+func GroupByCity(users []User) map[string][]string {
+	groupByCity := make(map[string][]string)
+	for _, user := range users {
+		groupByCity[user.City] = append(groupByCity[user.City], user.Name)
+	}
+	return groupByCity
+}
+
 func main() {
 
-	slice := []int{1, 2, 3, 4, 6, 18, 24, 654, 443}
+	slice := []int{1, 2, 3, 4, 5, 6, 7, 8, 9}
 
 	fmt.Println(sliceSum(slice))
 	fmt.Println(FilterEven(slice))
 	fmt.Println(Reverse(slice))
 	fmt.Println(Delete(slice, 4))
-
+	fmt.Println(insertByIndex(slice, 2, 222))
+	fmt.Println(insertAfterIndex(slice, 2, 444))
+	//чанки
+	fmt.Println(makeChunks(slice, 3))
 }
